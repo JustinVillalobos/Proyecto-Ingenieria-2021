@@ -1,1 +1,83 @@
-<p>Inicio Sesion!</p>
+<div id="body">
+<div class="container" >
+ <div class="row">
+   <div class="col-md-5 mx-auto">
+      <div id="first" [@fade]="signInAnimation" style="display:{{signInCss}}">
+        <div class="myform form ">
+         <div class="logo mb-3">
+           <div class="col-md-12 text-center">
+              <h1>Iniciar Sesión</h1>
+           </div>
+        </div>
+        <form action="" method="post" name="login">
+            <div class="form-group">
+               <label for="exampleInputEmail1">Correo electrónico</label>
+               <input type="email" name="email"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Ingrese su correo electrónico">
+            </div>
+            <div class="form-group">
+               <label for="exampleInputEmail1">Contraseña</label>
+               <input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Ingrese su contraseña">
+            </div>
+            
+            <div class="col-md-12 text-center ">
+               <a type="submit" class=" btn btn-block mybtn btn-primary tx-tfm" href="dashboard">Acceder</a>
+            </div>
+            <div class="col-md-12 ">
+               <div class="login-or">
+                  <hr class="hr-or">
+                  <span class="span-or">o</span>
+               </div>
+            </div>
+            <div class="col-md-12 mb-3">
+             
+                  <a href="javascript:void();" class="google btn mybtn text-center d-flex alig-items0=-center justify-content-center"><span class="big-i"><i class="fab fa-google-plus">
+                  </i></span><label> Inicia sesión con Google </label>
+               </a>
+            
+         </div>
+         <div class="form-group">
+            <p class="text-center">¿No tienes una cuenta? <button  id="signup" class="button" (click)="signUp()">Registrate aquí</button></p>
+         </div>
+       </form>
+        <!-- -->
+      </div>
+   </div>
+   <div id="second" [@fade2]="signUpAnimation" style="display:{{signUpCss}}">
+   <div class="myform form ">
+      <div class="logo mb-3">
+         <div class="col-md-12 text-center">
+            <h1 >Registrarse</h1>
+         </div>
+      </div>
+         <form action="#" name="registration">
+            <div class="form-group">
+               <label for="exampleInputEmail1">Primer Nombre</label>
+               <input type="text"  name="firstname" class="form-control" id="firstname" aria-describedby="emailHelp" placeholder="Ingrese su nombre">
+            </div>
+            <div class="form-group">
+               <label for="exampleInputEmail1">Apellidos</label>
+               <input type="text"  name="lastname" class="form-control" id="lastname" aria-describedby="emailHelp" placeholder="Ingrese sus apellidos">
+            </div>
+            <div class="form-group">
+               <label for="exampleInputEmail1">Correo electrónico</label>
+               <input type="email" name="email"  class="form-control" id="r_email" aria-describedby="emailHelp" placeholder="Ingrese un correo electrónico">
+            </div>
+            <div class="form-group">
+               <label for="exampleInputEmail1">Contraseña</label>
+               <input type="password" name="password" id="r_password"  class="form-control" aria-describedby="emailHelp" placeholder="Ingrese una contraseña">
+            </div>
+            <div class="col-md-12 text-center mb-3">
+               <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">Registrar</button>
+            </div>
+            <div class="col-md-12 ">
+               <div class="form-group">
+                  <p class="text-center"><button id="signin" (click)="signIn()" class="button">¿Ya tienes una cuenta?</button></p>
+               </div>
+            </div>
+         
+      </form>
+    </div>
+   </div>
+ </div>
+</div>
+</div>
