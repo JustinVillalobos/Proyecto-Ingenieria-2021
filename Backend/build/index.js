@@ -7,6 +7,9 @@ const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 const usuarioRoutes_1 = __importDefault(require("./routes/usuarioRoutes"));
+const sexoRoutes_1 = __importDefault(require("./routes/sexoRoutes"));
+const departamentoRoutes_1 = __importDefault(require("./routes/departamentoRoutes"));
+const clasificadorRoutes_1 = __importDefault(require("./routes/clasificadorRoutes"));
 class Server {
     constructor() {
         this.app = express_1.default();
@@ -22,8 +25,10 @@ class Server {
         this.app.use(express_1.default.urlencoded({ extended: false }));
     }
     route() {
-        this.app.use(usuarioRoutes_1.default);
-        this.app.use('/Backend/Usuario', usuarioRoutes_1.default);
+        this.app.use('/backend/Sexo', sexoRoutes_1.default);
+        this.app.use('/backend/Departamento', departamentoRoutes_1.default);
+        this.app.use('/backend/Clasificador', clasificadorRoutes_1.default);
+        this.app.use('/backend/Usuario', usuarioRoutes_1.default);
     }
     start() {
         this.app.listen(this.app.get('port'), () => {

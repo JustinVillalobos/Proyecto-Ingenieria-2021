@@ -4,6 +4,9 @@ import cors from 'cors';
 
 
 import usuarioRoutes from './routes/usuarioRoutes';
+import sexoRoutes from './routes/sexoRoutes';
+import departamentoRoutes from './routes/departamentoRoutes';
+import clasificadorRoutes from './routes/clasificadorRoutes';
 class Server {
     public app:Application;
     constructor(){
@@ -22,7 +25,9 @@ class Server {
 
     }
     route():void{
-        //this.app.use(usuarioRoutes);
+        this.app.use('/backend/Sexo',sexoRoutes);
+        this.app.use('/backend/Departamento',departamentoRoutes);
+        this.app.use('/backend/Clasificador',clasificadorRoutes);
         this.app.use('/backend/Usuario',usuarioRoutes);
     }
 

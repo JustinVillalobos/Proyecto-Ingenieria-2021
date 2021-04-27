@@ -42,7 +42,7 @@ const maskConfig: Partial<IConfig> = {
     BrowserAnimationsModule,
     //NgbPaginationModule, 
     //NgbAlertModule,
-   // DxPivotGridModule,
+    //DxPivotGridModule,
    // NgxDropzoneModule,
      NgxMaskModule.forRoot(maskConfig),
    //NgbModule

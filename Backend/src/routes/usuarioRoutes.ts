@@ -8,8 +8,10 @@ class usuarioRoutes{
 
     config():void{
         this.router.get('/',usuarioController.list);
-        
-
+        this.router.get('/select_by_id',usuarioController.selectById);
+        this.router.get('/delete',usuarioController.delete);
+        this.router.post('/update',usuarioController.update);
+        this.router.post('/insert',usuarioController.insert);
     }
 }
 
