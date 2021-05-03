@@ -1,0 +1,142 @@
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<h1>Boleta</h1>
+		</div>
+	</div>
+	<!--Seccion boleta-->
+	<!--
+
+		[IdBoleta] [int] IDENTITY(1,1) NOT NULL,
+	[FechaHora] [datetime] NOT NULL,
+	[IdUsuario] [int] NOT NULL,
+	[PalabraClaveConsulta1] [varchar](100) NOT NULL,
+	[PalabraClaveConsulta2] [varchar](100) NULL,
+	[AsuntoDetallado] [varchar](500) NULL,
+	[IpComputadora] [varchar](15) NOT NULL,
+	[CantidadCambios] [tinyint] NULL,
+	[IdClasificador] [tinyint] NOT NULL,
+	[IdRespuesta] [tinyint] NOT NULL,
+	[DetalleRespuesta] [varchar](500) NULL,
+	[FechaHoraRespuesta] [datetime] NULL,
+	[IdUsuarioRespuesta] [int] NULL,
+	[IpComputadoraRespuesta] [varchar](15) NULL,
+-->
+ <div class="border border-dark p-2">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="row">
+						<div class="col-sm-12">
+							<label>Fecha</label><label class="text-danger">*</label>
+						</div>
+						<div class="col-sm-12">
+							<input type="text" value="{{fecha}}" class="form-control" disabled="disabled" />
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="row">
+						<div class="col-sm-12">
+							<label>Asunto</label><label class="text-danger">*</label>
+						</div>
+						<div class="col-sm-12">
+							<input type="text" class="form-control" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+	<div class="row mt-2">
+		<div class="col-sm-12">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="row">
+						<div class="col-sm-12">
+							<label>Palabra clave</label><label class="text-danger">*</label>
+						</div>
+						<div class="col-sm-12">
+							<input type="text"  class="form-control" />
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="row">
+						<div class="col-sm-12">
+							<label>Otra palabra clave</label>
+						</div>
+						<div class="col-sm-12">
+							<input type="text" class="form-control" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+	<div class="row mt-2">
+		<div class="col-sm-12">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="row">
+						<div class="col-sm-12">
+							<label>Cantidad de cambios</label><label class="text-danger">*</label>
+						</div>
+						<div class="col-sm-12">
+							<input type="text" class="form-control" />
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="row">
+						<div class="col-sm-12">
+							<label>Clasificador</label><label class="text-danger">*</label>
+						</div>
+						<div class="col-sm-12">
+							<ng-select [(ngModel)]="selectedCar" placeholder="--Seleccione un clasificador--">
+							   <ng-option *ngFor="let car of cars" [value]="car.id">{{car.name}}</ng-option>
+							</ng-select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+
+	<!--Seccion detalle-->
+	<!--
+		[EvidenciaArchivo] [varchar](450) NOT NULL,
+	[Detalle] [varchar](500) NOT NULL,
+	-->
+	<div class="row mt-2">
+		<div class="col-sm-12">
+			<label>Evidencia</label><label class="text-danger">*</label>
+		</div>
+		<div class="col-sm-12">
+			<ngx-dropzone (change)="onSelect($event)" accept="image/jpeg,image/jpg,image/png,image/gif" [multiple]=false>
+				<ngx-dropzone-label>Arrastra los archivos</ngx-dropzone-label>
+				<ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+					<ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+				</ngx-dropzone-preview>
+			</ngx-dropzone>
+		</div>
+	</div>
+	<div class="row mt-2">
+		<div class="col-sm-12">
+			<label>Detalles</label><label class="text-danger">*</label>
+		</div>
+		<div class="col-sm-12">
+			<textarea class="form-control" ></textarea> 
+		</div>
+	</div>
+</div>
+
+</div>

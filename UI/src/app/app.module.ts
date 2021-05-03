@@ -16,12 +16,13 @@ import { CuboComponent } from './Components/cubo/cubo.component';
 
 
 //import { DxPivotGridModule } from 'devextreme-angular';
-//import { NgxDropzoneModule } from 'ngx-dropzone';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { DataTablesModule } from 'angular-datatables';
 
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { HeaderComponent } from './Templates/header/header.component';
 import { LeftSidebarComponent } from './Templates/left-sidebar/left-sidebar.component';
@@ -31,6 +32,7 @@ import { LeftSidebarMinComponent } from './Templates/left-sidebar-min/left-sideb
 import { MenuComponent } from './Templates/menu/menu.component';
 import { DepartamentoComponent } from './Components/departamento/departamento.component';
 import { ClasificadorComponent } from './Components/clasificador/clasificador.component';
+
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -59,9 +61,10 @@ const maskConfig: Partial<IConfig> = {
     BrowserAnimationsModule,
     DataTablesModule, RouterModule,
     ToastrModule.forRoot(),
-   // NgxDropzoneModule,
+    NgxDropzoneModule,
      NgxMaskModule.forRoot(maskConfig),
-     NgxSpinnerModule
+     NgxSpinnerModule,
+     NgSelectModule
   ],
   providers: [ServiceService],
   bootstrap: [AppComponent]
