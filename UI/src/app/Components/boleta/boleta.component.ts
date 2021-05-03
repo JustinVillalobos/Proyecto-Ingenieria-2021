@@ -9,7 +9,7 @@ import {Usuario} from '../../Domain/usuario';
   styleUrls: ['./boleta.component.css']
 })
 export class BoletaComponent implements OnInit {
-
+  variable:any="Hey";
   constructor(private ServiceService:ServiceService) { }
 
   ngOnInit(): void {
@@ -22,5 +22,9 @@ export class BoletaComponent implements OnInit {
       },
       err=>console.log(err)
     );*/
+  }
+  cambiar(){
+
+    this.variable="hola"
   }
 }

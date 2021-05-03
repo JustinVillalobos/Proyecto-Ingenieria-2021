@@ -1,0 +1,5 @@
+<input type="checkbox" id="check">
+<app-header *ngIf="showContent; else elseBlock"></app-header>
+<ng-template #elseBlock><app-header-min></app-header-min></ng-template>
+<app-left-sidebar *ngIf="showContent; else elseBlock2" class="sidebar"></app-left-sidebar>
+<ng-template #elseBlock2><app-left-sidebar-min class="sidebar"></app-left-sidebar-min></ng-template>

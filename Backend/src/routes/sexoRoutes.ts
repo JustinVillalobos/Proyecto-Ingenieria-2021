@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { usuarioController} from '../controllers/usuarioControllers';
+import { sexoController} from '../controllers/sexoController';
 class SexoRoutes{
     public router:Router=Router();
     constructor(){
@@ -7,7 +7,11 @@ class SexoRoutes{
     }
 
     config():void{
-        
+        this.router.get('/',sexoController.list);
+        this.router.get('/select_by_id',sexoController.selectById);
+        this.router.get('/delete',sexoController.delete);
+        this.router.post('/update',sexoController.update);
+        this.router.post('/insert',sexoController.insert);
     }
 }
 const sexoRoutes=new SexoRoutes();

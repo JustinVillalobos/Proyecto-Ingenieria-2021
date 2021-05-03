@@ -35,6 +35,68 @@ class UsuarioController {
             res.json(Usuarios);
         });
     }
+    selectBySesion(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const correo = req.query.correo;
+            const psw = req.query.password;
+            let ip = req.query.ip;
+            const fecha = new Date();
+            console.log(ip);
+            console.log(fecha);
+            let Usuarios = [];
+            let id = 0;
+            let response;
+            yield sql.connect().then(function (pool) {
+                return pool.request()
+                    .input("correo", mssql.VarChar, correo)
+                    .input("password", mssql.VarChar, psw)
+                    .execute("sp_usuario_select_by_sesion");
+            }).then(function (result) {
+                sql.close();
+                Usuarios = result.recordset;
+                if (Usuarios.length > 0) {
+                    id = Usuarios[0].idUsuario;
+                }
+            }).catch(function (err) {
+                console.log(err);
+                Usuarios = [{ text: "Error de la consulta" }, { "Response": false }];
+            });
+            if (id != 0) {
+                yield sql.connect().then(function (pool) {
+                    return pool.request()
+                        .input("IdUsuario", mssql.Int, id)
+                        .input("IpComputadora", mssql.VarChar, ip)
+                        .input("FechaSession", mssql.DateTime, fecha)
+                        .execute("sp_Session_insert");
+                }).then(function (result) {
+                    sql.close();
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            }
+            res.json([{ "Usuario": Usuarios }, { "Response": true }]);
+        });
+    }
+    selectByCedulaID(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const cedula = req.query.cedula;
+            const id = req.query.id;
+            let Usuarios = [];
+            yield sql.connect().then(function (pool) {
+                return pool.request()
+                    .input("cedula", mssql.Int, cedula)
+                    .input("id", mssql.Int, id)
+                    .execute("sp_usuario_select_by_cedula_id");
+            }).then(function (result) {
+                sql.close();
+                Usuarios = result.recordset;
+            }).catch(function (err) {
+                console.log(err);
+                Usuarios = [{ text: "Error de la consulta" }, { "Response": false }];
+            });
+            res.json([{ "Usuario": Usuarios }, { "Response": true }]);
+        });
+    }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.query.id;
@@ -64,7 +126,7 @@ class UsuarioController {
                     .input("Apellidos", mssql.VarChar, apellidos)
                     .input("FechaNacimiento", mssql.DateTime, fechaNacimiento)
                     .input("Correo", mssql.VarChar, correo)
-                    .input("IdDepartamento", mssql.int, IdDepartamento)
+                    .input("IdDepartamento", mssql.Int, IdDepartamento)
                     .input("IdSexo", mssql.Int, IdSexo)
                     .input("Telefono", mssql.VarChar, telefono)
                     .input("Foto", mssql.VarChar, foto)
@@ -103,7 +165,7 @@ class UsuarioController {
                     .input("Apellidos", mssql.VarChar, apellidos)
                     .input("FechaNacimiento", mssql.DateTime, fechaNacimiento)
                     .input("Correo", mssql.VarChar, correo)
-                    .input("IdDepartamento", mssql.int, IdDepartamento)
+                    .input("IdDepartamento", mssql.Int, IdDepartamento)
                     .input("IdSexo", mssql.Int, IdSexo)
                     .input("Telefono", mssql.VarChar, telefono)
                     .input("Foto", mssql.VarChar, foto)

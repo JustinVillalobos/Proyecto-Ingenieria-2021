@@ -10,6 +10,8 @@ class usuarioRoutes {
     config() {
         this.router.get('/', usuarioControllers_1.usuarioController.list);
         this.router.get('/select_by_id', usuarioControllers_1.usuarioController.selectById);
+        this.router.get('/select_by_sesion', usuarioControllers_1.usuarioController.selectBySesion);
+        this.router.get('/select_by_cedula_id', usuarioControllers_1.usuarioController.selectByCedulaID);
         this.router.get('/delete', usuarioControllers_1.usuarioController.delete);
         this.router.post('/update', usuarioControllers_1.usuarioController.update);
         this.router.post('/insert', usuarioControllers_1.usuarioController.insert);

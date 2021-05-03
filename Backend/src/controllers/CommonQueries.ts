@@ -10,11 +10,11 @@ module.exports = class CommonQueries{
       	let msg:boolean=true;
            await sql.connect().then(function(pool:any) {
                 return pool.request()
-                .input("id", mssql.Int, parameter)
+                .input("id", mssql2.Int, parameter)
                 .execute(query);
             }).then(function(result:any) {
                 sql.close();
-                 msg=result.recordset;
+                 msg=true;
             }).catch(function(err:any){
                  msg=false;
             });
@@ -29,15 +29,13 @@ module.exports = class CommonQueries{
                 sql.close();
                 objects=result.recordset;
             }).catch(function(err:any){
-                  objects={text:"Error de la consulta"};
+                  objects=[{text:"Error de la consulta"},{"Response":false}];
             });
 
          return objects;
     }
      public async selectById(parameter:number,query:string){
       	let objects:any=[];
-        console.log(parameter+"="+query);
-
            await sql.connect().then(function(pool:any) {
                 return pool.request()
                  .input("id", mssql2.Int, parameter)
@@ -47,7 +45,7 @@ module.exports = class CommonQueries{
                 objects=result.recordset;
             }).catch(function(err:any){
               console.log(err);
-                  objects={text:"Error de la consulta"};
+                  objects=[{text:"Error de la consulta"},{"Response":false}];
             });
          return objects;
     }

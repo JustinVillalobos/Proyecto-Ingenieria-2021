@@ -18,11 +18,11 @@ module.exports = class CommonQueries {
             let msg = true;
             yield sql.connect().then(function (pool) {
                 return pool.request()
-                    .input("id", mssql.Int, parameter)
+                    .input("id", mssql2.Int, parameter)
                     .execute(query);
             }).then(function (result) {
                 sql.close();
-                msg = result.recordset;
+                msg = true;
             }).catch(function (err) {
                 msg = false;
             });
@@ -39,7 +39,7 @@ module.exports = class CommonQueries {
                 sql.close();
                 objects = result.recordset;
             }).catch(function (err) {
-                objects = { text: "Error de la consulta" };
+                objects = [{ text: "Error de la consulta" }, { "Response": false }];
             });
             return objects;
         });
@@ -47,7 +47,6 @@ module.exports = class CommonQueries {
     selectById(parameter, query) {
         return __awaiter(this, void 0, void 0, function* () {
             let objects = [];
-            console.log(parameter + "=" + query);
             yield sql.connect().then(function (pool) {
                 return pool.request()
                     .input("id", mssql2.Int, parameter)
@@ -57,7 +56,7 @@ module.exports = class CommonQueries {
                 objects = result.recordset;
             }).catch(function (err) {
                 console.log(err);
-                objects = { text: "Error de la consulta" };
+                objects = [{ text: "Error de la consulta" }, { "Response": false }];
             });
             return objects;
         });
