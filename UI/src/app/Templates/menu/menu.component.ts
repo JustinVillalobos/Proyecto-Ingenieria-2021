@@ -20,6 +20,7 @@ export class MenuComponent implements OnInit {
          if(res[1]["Response"]===true){
            if(res[0]["Usuario"][0]["IdDepartamento"]===1){
              this.showContent=true;
+             this.auth();
            }else{
               this.router.navigate(['/UI']);
            }
@@ -30,6 +31,14 @@ export class MenuComponent implements OnInit {
       },
       err=>console.log(err)
     );
+  }
+  auth(){
+    let token=localStorage.getItem("auth_token");
+         if(token.length==0){
+           this.router.navigate(['/UI']);
+         }
+       
+
   }
 
 }

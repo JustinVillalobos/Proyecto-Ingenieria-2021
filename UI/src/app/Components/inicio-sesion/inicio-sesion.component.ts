@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {Router} from "@angular/router";
+import  CryptoJS from 'crypto-js'; 
 import {  trigger,
   state,
   style,
@@ -90,12 +91,18 @@ export class InicioSesionComponent implements OnInit {
     //[sp_Session_insert]
     if(this.correo!="" && this.correo.length>0 && this.password!="" && this.password.length>0){
       if(this.ValidatorService.validarEmail(this.correo)){
-        this.UsuarioService.getusuarioBySesion(this.correo,this.password,this.ip).subscribe(
+        let usuario={
+          correo:CryptoJS.AES.encrypt(this.correo.trim(), 'secret key 123').toString(),
+          password:CryptoJS.AES.encrypt(this.password.trim(), 'secret key 123' ).toString(),
+          ip:this.ip
+        };
+        this.UsuarioService.getusuarioBySesion(usuario).subscribe(
             res=>{
-              if(res[1]["Response"]===true && res[0]["Usuario"].length!=0){
-                console.log(res);
-                localStorage.setItem("cedula",res[0]["Usuario"][0]["Cedula"]);
-                 localStorage.setItem("Id",res[0]["Usuario"][0]["idUsuario"]);
+              if(res["Response"]===true && res["Usuario"].length!=0){
+                localStorage.setItem("cedula",res["Usuario"]["Cedula"]);
+                 localStorage.setItem("Id",res["Usuario"]["idUsuario"]);
+                 localStorage.setItem('auth_token', res["token"]);
+                 localStorage.setItem('signed_user', JSON.stringify(res["signed_user"]));
                  this.alertService.alertTimeCorrect("Inicio de sesión éxitosa",function(component_2){
                                component_2.correo="";
                                component_2.password="";
@@ -105,6 +112,7 @@ export class InicioSesionComponent implements OnInit {
                
               
               }else{
+
                  this.alertService.alertaError("El correo y contraseña no coincide con ningún usuario registrado");
               }
             },

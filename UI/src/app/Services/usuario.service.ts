@@ -14,8 +14,13 @@ export class UsuarioService {
   getusuarios(){
     return this.http.get(`${this.API_URI}/`);
   }
-  getusuarioBySesion(correo:string,password:string,ip:string){
-    return this.http.get(`${this.API_URI}/select_by_sesion?correo=${correo}&&password=${password}&&ip=${ip}`);
+  getusuarioBySesion(usuarioSession){
+    
+    return this.http.post(`${this.API_URI}/select_by_sesion`,usuarioSession);
+  }
+  auth(usuarioSession,token){
+    
+    return this.http.post(`${this.API_URI}/auth`,{"signed_user":usuarioSession,"token":token});
   }
   getusuarioByCedulaId(cedula:string,id:string){
     return this.http.get(`${this.API_URI}/select_by_cedula_id?cedula=${cedula}&&id=${id}`);

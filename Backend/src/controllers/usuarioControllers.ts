@@ -4,8 +4,11 @@ const commonQueries = require("./CommonQueries");
 const sql = new sqlConnection();
 const common=new commonQueries();
 const mssql = require('mssql');
+var CryptoJS = require("crypto-js");
 "use strict";
+const jwt = require('jsonwebtoken');
 
+const JWT_Secret = 'your_secret_key';
 class UsuarioController{
     constructor() {
        
@@ -25,12 +28,12 @@ class UsuarioController{
         res.json(Usuarios);
     }
     public async selectBySesion(req:Request,res:Response){
-        const correo=req.query.correo;
-        const psw=req.query.password;
-        let ip=req.query.ip;
+        const correoe=req.body.correo;
+        const pswe=req.body.password;
+         const correo = CryptoJS.AES.decrypt(correoe.trim(), 'secret key 123').toString(CryptoJS.enc.Utf8);
+         const psw = CryptoJS.AES.decrypt(pswe.trim(), 'secret key 123').toString(CryptoJS.enc.Utf8);
+        let ip=req.body.ip;
         const fecha=new Date();
-        console.log(ip);
-        console.log(fecha);
           let Usuarios:any=[];
           let id=0;
           let response;
@@ -40,15 +43,17 @@ class UsuarioController{
                  .input("password", mssql.VarChar, psw)
                 .execute("sp_usuario_select_by_sesion");
             }).then(function(result:any) {
-                sql.close();
+               
                 Usuarios=result.recordset;
+                 sql.close();
                 if(Usuarios.length>0){
                     id=Usuarios[0].idUsuario;
+
                 }
 
             }).catch(function(err:any){
               console.log(err);
-                  Usuarios=[{text:"Error de la consulta"},{"Response":false}];
+                  response={text:"Error de la consulta"};
             });
             if(id!=0){
                 await sql.connect().then(function(pool:any) {
@@ -59,15 +64,34 @@ class UsuarioController{
                     .execute("sp_Session_insert");
                 }).then(function(result:any) {
                     sql.close();
+                     var token = jwt.sign(req.body, JWT_Secret);
+                      res.status(200).json({
+                        signed_user: req.body,
+                        token: token,
+                        "Usuario":Usuarios[0],
+                        "Response":true
+                      });
                 }).catch(function(err:any){
                     console.log(err);
 
                 });
+
+            }else{
+                res.json({"Response":false,response});
             }
-        
-        res.json([{"Usuario":Usuarios},{"Response":true}]);
+       
+      //  res.json([{"Usuario":Usuarios},{"Response":true}]);
     }
- 
+    public async auth(req:Request,res:Response){
+        
+         var token = jwt.sign(req.body.signed_user, JWT_Secret);
+         var tokeninmemorie=req.body.token;
+         if(token==tokeninmemorie){
+             res.json({"Response":true});
+         }else{
+              res.json({"Response":false});
+         }
+    }
     public async selectByCedulaID(req:Request,res:Response){
         const cedula=req.query.cedula;
         const id=req.query.id;

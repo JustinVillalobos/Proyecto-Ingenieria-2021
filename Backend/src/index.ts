@@ -1,7 +1,7 @@
 import express, {Application} from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-
+import bodyParser from 'body-parser';
 
 import usuarioRoutes from './routes/usuarioRoutes';
 import sexoRoutes from './routes/sexoRoutes';
@@ -21,6 +21,8 @@ class Server {
         this.app.use(cors());
         this.app.use(cors());
         this.app.use(express.json());
+        this.app.use(bodyParser.json());
+        
         this.app.use(express.urlencoded({extended:false}));
 
     }

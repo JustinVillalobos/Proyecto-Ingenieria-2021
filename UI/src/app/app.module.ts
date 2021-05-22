@@ -19,6 +19,7 @@ import { CuboComponent } from './Components/cubo/cubo.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { DataTablesModule } from 'angular-datatables';
+ 
 
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";

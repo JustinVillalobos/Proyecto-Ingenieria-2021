@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
+const body_parser_1 = __importDefault(require("body-parser"));
 const usuarioRoutes_1 = __importDefault(require("./routes/usuarioRoutes"));
 const sexoRoutes_1 = __importDefault(require("./routes/sexoRoutes"));
 const departamentoRoutes_1 = __importDefault(require("./routes/departamentoRoutes"));
@@ -22,6 +23,7 @@ class Server {
         this.app.use(cors_1.default());
         this.app.use(cors_1.default());
         this.app.use(express_1.default.json());
+        this.app.use(body_parser_1.default.json());
         this.app.use(express_1.default.urlencoded({ extended: false }));
     }
     route() {
