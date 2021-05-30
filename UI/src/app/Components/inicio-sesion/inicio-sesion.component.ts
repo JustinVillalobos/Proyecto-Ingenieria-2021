@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {Router} from "@angular/router";
-import  CryptoJS from 'crypto-js'; 
+
 import {  trigger,
   state,
   style,
   animate,
   transition } from '@angular/animations';
   import { UsuarioService } from '../../Services/usuario.service';
+  import { AuthService } from '../../Services/auth.service';
 import { IpService } from '../../Services/ip.service';
 import {Usuario} from '../../Domain/usuario';
 import { ToastService } from '../../Business/toast.service';
 import { AlertsService } from '../../Business/alerts.service';
 import { ValidatorService } from '../../Business/validator.service';
+import  {EncrypterService} from '../../Business/encrypter.service'; 
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-inicio-sesion',
@@ -53,7 +55,8 @@ export class InicioSesionComponent implements OnInit {
   constructor(private UsuarioService:UsuarioService, 
     private router:Router,private toastr:ToastService, 
     private alertService:AlertsService, private ValidatorService:ValidatorService,
-    private IpService:IpService) { 
+    private IpService:IpService,private AuthService:AuthService,
+    private EncrypterService:EncrypterService) { 
     this.IpService.getIPAddress().subscribe((res:any)=>{  
       this.ip=res.ip; 
 
@@ -92,17 +95,16 @@ export class InicioSesionComponent implements OnInit {
     if(this.correo!="" && this.correo.length>0 && this.password!="" && this.password.length>0){
       if(this.ValidatorService.validarEmail(this.correo)){
         let usuario={
-          correo:CryptoJS.AES.encrypt(this.correo.trim(), 'secret key 123').toString(),
-          password:CryptoJS.AES.encrypt(this.password.trim(), 'secret key 123' ).toString(),
+          correo:this.EncrypterService.encrypterData(this.correo),
+          password:this.EncrypterService.encrypterData(this.password),
           ip:this.ip
         };
-        this.UsuarioService.getusuarioBySesion(usuario).subscribe(
+        this.AuthService.getusuarioBySesion(usuario).subscribe(
             res=>{
               if(res["Response"]===true && res["Usuario"].length!=0){
                 localStorage.setItem("cedula",res["Usuario"]["Cedula"]);
                  localStorage.setItem("Id",res["Usuario"]["idUsuario"]);
                  localStorage.setItem('auth_token', res["token"]);
-                 localStorage.setItem('signed_user', JSON.stringify(res["signed_user"]));
                  this.alertService.alertTimeCorrect("Inicio de sesión éxitosa",function(component_2){
                                component_2.correo="";
                                component_2.password="";

@@ -27,71 +27,7 @@ class UsuarioController{
         Usuarios= await common.selectById(id,"sp_usuario_select_by_id");
         res.json(Usuarios);
     }
-    public async selectBySesion(req:Request,res:Response){
-        const correoe=req.body.correo;
-        const pswe=req.body.password;
-         const correo = CryptoJS.AES.decrypt(correoe.trim(), 'secret key 123').toString(CryptoJS.enc.Utf8);
-         const psw = CryptoJS.AES.decrypt(pswe.trim(), 'secret key 123').toString(CryptoJS.enc.Utf8);
-        let ip=req.body.ip;
-        const fecha=new Date();
-          let Usuarios:any=[];
-          let id=0;
-          let response;
-         await sql.connect().then(function(pool:any) {
-                return pool.request()
-                 .input("correo", mssql.VarChar, correo)
-                 .input("password", mssql.VarChar, psw)
-                .execute("sp_usuario_select_by_sesion");
-            }).then(function(result:any) {
-               
-                Usuarios=result.recordset;
-                 sql.close();
-                if(Usuarios.length>0){
-                    id=Usuarios[0].idUsuario;
-
-                }
-
-            }).catch(function(err:any){
-              console.log(err);
-                  response={text:"Error de la consulta"};
-            });
-            if(id!=0){
-                await sql.connect().then(function(pool:any) {
-                    return pool.request()
-                    .input("IdUsuario", mssql.Int, id)
-                    .input("IpComputadora", mssql.VarChar, ip)
-                    .input("FechaSession", mssql.DateTime, fecha)
-                    .execute("sp_Session_insert");
-                }).then(function(result:any) {
-                    sql.close();
-                     var token = jwt.sign(req.body, JWT_Secret);
-                      res.status(200).json({
-                        signed_user: req.body,
-                        token: token,
-                        "Usuario":Usuarios[0],
-                        "Response":true
-                      });
-                }).catch(function(err:any){
-                    console.log(err);
-
-                });
-
-            }else{
-                res.json({"Response":false,response});
-            }
-       
-      //  res.json([{"Usuario":Usuarios},{"Response":true}]);
-    }
-    public async auth(req:Request,res:Response){
-        
-         var token = jwt.sign(req.body.signed_user, JWT_Secret);
-         var tokeninmemorie=req.body.token;
-         if(token==tokeninmemorie){
-             res.json({"Response":true});
-         }else{
-              res.json({"Response":false});
-         }
-    }
+    
     public async selectByCedulaID(req:Request,res:Response){
         const cedula=req.query.cedula;
         const id=req.query.id;
