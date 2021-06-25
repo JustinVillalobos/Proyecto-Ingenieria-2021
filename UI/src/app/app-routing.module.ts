@@ -17,6 +17,8 @@ const routes: Routes = [
   component:BoletaComponent},
   {path:'Cubo',
   component:CuboComponent},
+  {path:'Pereza',
+  component:CuboComponent},
   {path:'dashboard',
   component:DashboardComponent},
   {path:'sexo',
