@@ -1,3 +1,5 @@
 Backend/node_modules
+Backend/src/Config.ts
+Backend/build/Config.js
 UI/node_modules
 BD-Diana y Justin.sql

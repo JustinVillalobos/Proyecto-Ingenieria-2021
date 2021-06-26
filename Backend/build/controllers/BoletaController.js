@@ -29,6 +29,12 @@ class BoletaController {
             res.json(boletas);
         });
     }
+    upload(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var ruta = req.files["imagen"]["path"].split("\\");
+            res.json({ "Response": true, "newName": ruta[2] });
+        });
+    }
     selectById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.query.id;
@@ -38,20 +44,37 @@ class BoletaController {
             res.json(boletas);
         });
     }
-    selectBoleta(req, res) {
+    selectBoleta(req, res, fechaHora) {
         return __awaiter(this, void 0, void 0, function* () {
-            const fechaHora = req.query.fechaHora;
-            const idUsuario = req.query.idUsuario;
-            const palabraClaveConsulta1 = req.query.palabraClaveConsulta1;
-            const palabraClaveConsulta2 = req.query.palabraClaveConsulta2;
-            const asuntoDetallado = req.query.asuntoDetallado;
-            let ipComputadora = req.query.ipComputadora;
-            const cantidadCambios = req.query.cantidadCambios;
-            const idClasificador = req.query.idClasificador;
+            const idUsuario = [req.body.IdUsuario];
+            const palabraClaveConsulta1 = [req.body.PalabraClaveConsulta1];
+            const palabraClaveConsulta2 = [req.body.PalabraClaveConsulta2];
+            const asuntoDetallado = [req.body.AsuntoDetallado];
+            let ipComputadora = [req.body.IpComputadora];
+            const cantidadCambios = [req.body.CantidadCambios];
+            const idClasificador = [req.body.IdClasificador];
+            const idRespuesta = 1;
             let boletas = [];
-            console.log(req.query.id);
-            boletas = yield common.selectById(fechaHora, idUsuario, palabraClaveConsulta1, palabraClaveConsulta2, asuntoDetallado, ipComputadora, cantidadCambios, idClasificador, "sp_boleta_select");
-            res.json(boletas);
+            let controller = new BoletaController();
+            yield sql.connect().then(function (pool) {
+                return pool.request()
+                    .input("FechaHora", mssql.DateTime, fechaHora)
+                    .input("IdUsuario", mssql.Int, idUsuario)
+                    .input("PalabraClaveConsulta1", mssql.VarChar, palabraClaveConsulta1)
+                    .input("PalabraClaveConsulta2", mssql.VarChar, palabraClaveConsulta2)
+                    .input("AsuntoDetallado", mssql.VarChar, asuntoDetallado)
+                    .input("IpComputadora", mssql.VarChar, ipComputadora)
+                    .input("CantidadCambios", mssql.TinyInt, cantidadCambios)
+                    .input("IdClasificador", mssql.TinyInt, idClasificador)
+                    .input("IdRespuesta", mssql.TinyInt, 1)
+                    .execute("p_boleta_select");
+            }).then(function (result) {
+                boletas = result.recordset;
+                sql.close();
+                controller.insertarDetalle(req, res, boletas[0].IdBoleta);
+            }).catch(function (err) {
+                res.status(400).json({ text: "Error de la consulta" });
+            });
         });
     }
     delete(req, res) {
@@ -62,17 +85,25 @@ class BoletaController {
             res.json(response);
         });
     }
+    selectByEmpleado(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = req.query.id;
+            let response;
+            response = yield common.selectById(id, "sp_boleta_empleado");
+            res.json(response);
+        });
+    }
     insert(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const fechaHora = new Date();
-            const idUsuario = [req.body.idUsuario];
-            const palabraClaveConsulta1 = [req.body.palabraClaveConsulta1];
-            const palabraClaveConsulta2 = [req.body.palabraClaveConsulta2];
-            const asuntoDetallado = [req.body.asuntoDetallado];
-            let ipComputadora = [req.body.ipComputadora];
-            const cantidadCambios = [req.body.cantidadCambios];
-            const idClasificador = [req.body.idClasificador];
-            const idRespuesta = [req.body.idRespuesta];
+            const idUsuario = [req.body.IdUsuario];
+            const palabraClaveConsulta1 = [req.body.PalabraClaveConsulta1];
+            const palabraClaveConsulta2 = [req.body.PalabraClaveConsulta2];
+            const asuntoDetallado = [req.body.AsuntoDetallado];
+            let ipComputadora = [req.body.IpComputadora];
+            const cantidadCambios = [req.body.CantidadCambios];
+            const idClasificador = [req.body.IdClasificador];
+            const idRespuesta = 1;
             let response;
             let boletas = [];
             let controller = new BoletaController();
@@ -85,43 +116,38 @@ class BoletaController {
                     .input("PalabraClaveConsulta2", mssql.VarChar, palabraClaveConsulta2)
                     .input("AsuntoDetallado", mssql.VarChar, asuntoDetallado)
                     .input("IpComputadora", mssql.VarChar, ipComputadora)
-                    .input("CantidadCambios", mssql.Tinyint, cantidadCambios)
-                    .input("IdClasificador", mssql.Tinyint, idClasificador)
-                    .input("IdRespuesta", mssql.Tinyint, idRespuesta)
-                    .execute("sp_boleta_insertar");
+                    .input("CantidadCambios", mssql.TinyInt, cantidadCambios)
+                    .input("IdClasificador", mssql.TinyInt, idClasificador)
+                    .input("IdRespuesta", mssql.TinyInt, idRespuesta)
+                    .execute("p_boleta_insertar");
             }).then(function (result) {
                 boletas = result.recordset;
                 sql.close();
-                if (boletas.length > 0) {
-                    id = boletas[0].idBoleta;
-                    controller.insertarDetalle(req, res, id, boletas[0]);
-                }
+                controller.selectBoleta(req, res, fechaHora);
             }).catch(function (err) {
                 console.log(err);
                 res.status(400).json({ text: "Error de la consulta" });
             });
-            res.json(response);
         });
     }
-    insertarDetalle(req, res, id, data) {
+    insertarDetalle(req, res, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const evidenciaArchivo = [req.body.evidenciaArchivo];
-            const detalle = [req.body.detalle];
+            const evidenciaArchivo = [req.body.Detalle.EvidenciaArchivo];
+            const detalle = [req.body.Detalle.detalle];
             let response;
             yield sql.connect().then(function (pool) {
                 return pool.request()
                     .input("IdBoleta", mssql.Int, id)
                     .input("EvidenciaArchivo", mssql.VarChar, evidenciaArchivo)
                     .input("Detalle", mssql.VarChar, detalle)
-                    .execute("sp_detalle_insertar");
+                    .execute("p_detalle_insertar");
             }).then(function (result) {
                 sql.close();
-                response = result.recordset;
+                res.json({ "Response": true });
             }).catch(function (err) {
                 console.log(err);
-                res.status(400).json({ text: "Error de la consulta" });
+                res.status(400).json([{ text: "Error de la consulta" }, { "Response": false }]);
             });
-            res.json(response);
         });
     }
     update(req, res) {

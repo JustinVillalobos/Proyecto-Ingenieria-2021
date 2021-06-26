@@ -1,4 +1,10 @@
 import {Router} from 'express';
+const multipart = require('connect-multiparty');
+
+const multipartMiddleware = multipart({
+    uploadDir: './build/uploads'
+
+});
 import { boletaController } from '../controllers/BoletaController';
 
 class BoletaRoutes {
@@ -12,6 +18,9 @@ class BoletaRoutes {
         this.router.get('/select_by_id',boletaController.selectById);
         this.router.post('/update',boletaController.update);
         this.router.post('/insert',boletaController.insert);
+        this.router.post('/upload',multipartMiddleware,boletaController.upload);
+        this.router.get('/select_by_Empleado',boletaController.selectByEmpleado);
+
     }
 }
 const boletaRoutes=new BoletaRoutes();

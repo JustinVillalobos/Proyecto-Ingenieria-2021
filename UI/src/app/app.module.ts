@@ -1,7 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
-import {FormsModule} from '@angular/forms';
+
+import {FormsModule,ReactiveFormsModule } from '@angular/forms';
+
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
@@ -19,7 +21,7 @@ import { CuboComponent } from './Components/cubo/cubo.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { DataTablesModule } from 'angular-datatables';
- 
+
 
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
@@ -33,6 +35,7 @@ import { LeftSidebarMinComponent } from './Templates/left-sidebar-min/left-sideb
 import { MenuComponent } from './Templates/menu/menu.component';
 import { DepartamentoComponent } from './Components/departamento/departamento.component';
 import { ClasificadorComponent } from './Components/clasificador/clasificador.component';
+import { ListadoBoletasEmpleadoComponent } from './Components/listado-boletas-empleado/listado-boletas-empleado.component';
 
 
 const maskConfig: Partial<IConfig> = {
@@ -52,13 +55,15 @@ const maskConfig: Partial<IConfig> = {
     LeftSidebarMinComponent,
     MenuComponent,
     DepartamentoComponent,
-    ClasificadorComponent
+    ClasificadorComponent,
+    ListadoBoletasEmpleadoComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule ,
     BrowserAnimationsModule,
     DataTablesModule, RouterModule,
     ToastrModule.forRoot(),

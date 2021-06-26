@@ -7,6 +7,7 @@ import usuarioRoutes from './routes/usuarioRoutes';
 import sexoRoutes from './routes/sexoRoutes';
 import departamentoRoutes from './routes/departamentoRoutes';
 import clasificadorRoutes from './routes/clasificadorRoutes';
+import boletaRoutes from './routes/BoletaRoutes';
 import authRoutes from './routes/AuthRoutes';
 class Server {
     public app:Application;
@@ -23,7 +24,7 @@ class Server {
         this.app.use(cors());
         this.app.use(express.json());
         this.app.use(bodyParser.json());
-        
+
         this.app.use(express.urlencoded({extended:false}));
 
     }
@@ -31,6 +32,7 @@ class Server {
         this.app.use('/backend/Sexo',sexoRoutes);
         this.app.use('/backend/Departamento',departamentoRoutes);
         this.app.use('/backend/Clasificador',clasificadorRoutes);
+        this.app.use('/backend/Boleta',boletaRoutes);
         this.app.use('/backend/Usuario',usuarioRoutes);
         this.app.use('/backend/Auth',authRoutes);
     }

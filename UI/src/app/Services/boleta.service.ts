@@ -14,8 +14,14 @@ export class BoletaService {
   getBoletas(){
     return this.http.get<Boleta[]>(`${this.API_URI}/`);
   }
+  upload(file){
+    return this.http.post(`${this.API_URI}/upload`,file);
+  }
   getBoletasById(codigo:number){
     return this.http.get(`${this.API_URI}/select_by_id?id=${codigo}`);
+  }
+  getBoletasByEmpleado(codigo:number){
+    return this.http.get(`${this.API_URI}/select_by_Empleado?id=${codigo}`);
   }
   insert(boleta:Boleta){
     return this.http.post(`${this.API_URI}/insert`,boleta);

@@ -91,7 +91,6 @@ export class InicioSesionComponent implements OnInit {
   }
 
   sesion(){
-    //[sp_Session_insert]
     if(this.correo!="" && this.correo.length>0 && this.password!="" && this.password.length>0){
       if(this.ValidatorService.validarEmail(this.correo)){
         let usuario={

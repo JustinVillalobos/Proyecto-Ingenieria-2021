@@ -23,7 +23,7 @@ export class MenuComponent implements OnInit {
              this.showContent=true;
              
            }else{
-              this.router.navigate(['/UI']);
+             this.showContent=false;
            }
          }else{
             this.router.navigate(['/UI']);

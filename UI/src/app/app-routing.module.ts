@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {InicioSesionComponent} from './Components/inicio-sesion/inicio-sesion.component';
 import { BoletaComponent } from './Components/boleta/boleta.component';
+import { ListadoBoletasEmpleadoComponent } from './Components/listado-boletas-empleado/listado-boletas-empleado.component';
 import { CuboComponent } from './Components/cubo/cubo.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { SexoComponent } from './Components/sexo/sexo.component';
@@ -15,6 +16,8 @@ const routes: Routes = [
   component:InicioSesionComponent},
   {path:'boleta',
   component:BoletaComponent},
+  {path:'listado_por_empleado',
+  component:ListadoBoletasEmpleadoComponent},
   {path:'Cubo',
   component:CuboComponent},
   {path:'Pereza',
