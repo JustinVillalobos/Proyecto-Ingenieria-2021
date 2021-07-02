@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Directive,ElementRef,ViewChild} from '@angular/core';
-import { FormBuilder, FormGroup } from "@angular/forms";
+
 import { DataTablesResponse } from '../../Domain/data-tables-response';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -22,144 +22,172 @@ import { NgSelectConfig } from '@ng-select/ng-select';
   templateUrl: './boleta.component.html',
   styleUrls: ['./boleta.component.css']
 })
+
+
 export class BoletaComponent implements OnInit {
   fecha:any=new Date();
+  boletaInsertar:any={
 
-  boleta:any={
-    IdBoleta:0,
-    FechaHora:new Date(),
-    IdUsuario:localStorage.getItem("Id"),
-    PalabraClaveConsulta1:"",
-    PalabraClaveConsulta2:"",
-    AsuntoDetallado:"",
-    IpComputadora:"",
+    /**
+     * 	[IdBoleta] [int] IDENTITY(1,1) NOT NULL,
+	[FechaHora] [datetime] NOT NULL,
+	[IdUsuario] [int] NOT NULL,
+	[PalabraClaveConsulta1] [varchar](100) NOT NULL,
+	[PalabraClaveConsulta2] [varchar](100) NULL,
+	[AsuntoDetallado] [varchar](500) NULL,
+	[IpComputadora] [varchar](15) NOT NULL,
+	[CantidadCambios] [tinyint] NULL,
+	[IdClasificador] [tinyint] NOT NULL,
+	[IdRespuesta] [tinyint] NOT NULL,
+	[DetalleRespuesta] [varchar](500) NULL,
+	[FechaHoraRespuesta] [datetime] NULL,
+	[IdUsuarioRespuesta] [int] NULL,
+	[IpComputadoraRespuesta] [varchar](15) NULL,
+     */
     CantidadCambios:0,
-    IdClasificador:0,
-    Detalle:{
-      Linea:0,
-      EvidenciaArchivo:"",
-      detalle:""
+    iUsuario:localStorage.getItem("Id"),
+    fechaHora: new Date(),
+    palabraClaveConsulta1: "",
+    palabraClaveConsulta2: "",
+    asuntoDetallado: "",
+    ipComputadora: "",
+    idClasificador: 1,
 
-    }
+    
   };
-  showContent:boolean=false;
-  selected: number;
+
+  detalle: any={
+    archivos:[]
+
+  };
+  selectedCar: number;
   files: File[] = [];
-  clasificadores:any=[];
-    ip:string="";
+  clasificadores:any={
+    IdClasificador:1,
+		Descripcion:""
+  };
 
 
+ 
+
+  showContent:boolean=false;//Variable que controla cuando mostrar el datatable
+	dtOptions:DataTables.Settings = {};//Variable con las configuraciones del datatable
   className:any={dark:"border-dark",success:"border-success",danger:"border-danger"};
   stateInsert:any="border-dark";
-  form: FormGroup;
+
   constructor(private ClasificadorService:ClasificadorService,
-    private BoletaService:BoletaService,
+    private BoletaService:BoletaService,  
     private AlertsService:AlertsService,
     private  toastr:ToastService,
     private spinner: NgxSpinnerService,
     private IpService:IpService,
-    private ValidatorService:ValidatorService,
-    public fb: FormBuilder,
+
+    private ValidatorService:ValidatorService, 
     private config: NgSelectConfig) {
    // var options = { year: 'numeric', month: 'long', day: 'numeric',hour:"numeric", minute:"numeric", second:"numeric" };
-
-      this.IpService.getIPAddress().subscribe((res:any)=>{
-        this.boleta.IpComputadora=res.ip;
+       var options = { year: 'numeric', month: 'long', day: 'numeric' };
+      //console.log(this.fecha.toLocaleDateString("es-ES", options));
+      this.fecha=this.fecha.toLocaleDateString("es-ES", options);
+      this.config.notFoundText = 'Item no encontrado';
+      this.config.appendTo = 'body';
+      this.config.bindValue = 'value';
+      this.IpService.getIPAddress().subscribe((res:any)=>{  
+        this.boletaInsertar.ipComputadora=res.ip; 
       });
       this.getClasificadores();
-
-
-    this.form = this.fb.group({
-      avatar: [null]
-    });
+      this.dtOptions={
+  
+         destroy:true,
+            responsive: true,
+            language: {
+              "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+            },
+             
+            columnDefs: [
+                    { width: '80', targets: 0, className:"text-center" },
+                    { width: '80', targets: 2, className:"justify-content-center" },
+                    {"orderable":false,targets:2}
+                  ],
+            
+    }
+      
+    
    }
 
    ngOnInit(): void {
     this.spinner.show();
-
   }
   /*Seccion de metodos con operacion services*/
   getClasificadores(){
   	this.ClasificadorService.getClasificadores().subscribe(
       res=>{
         this.clasificadores=res;
+        console.log(res);
         this.showContent=true;
         this.spinner.hide();
       },
       err=>console.log(err)
     );
   }
-uploadFile(){
 
-    if(this.boleta.AsuntoDetallado!="" && this.boleta.PalabraClaveConsulta1!="" && this.boleta.IdClasificador!=0 && this.files.length!=0){
-     var formData: any = new FormData();
-     formData.append("imagen", this.form.get('avatar').value);
-
-    this.BoletaService.upload(formData).subscribe(
-      res=>{
-        if(res["Response"]){
-          this.boleta.Detalle.EvidenciaArchivo=res["newName"];
-          this.insert();
-        }
-      },
-      err=>console.log(err)
-    );
-  }else{
-    this.stateInsert=this.className.danger;
-    //this.reloadInsertState();
-    this.toastr.toastrError("Los campos de la boleta no pueden ir vacío");
-  }
-}
-enviar(){
-  this.boleta.IdClasificador=this.selected;
-    this.uploadFile();
-}
-  insert(){
+  insertBoleta(){
+    if(this.boletaInsertar.asunto!="" && this.boletaInsertar.palabraclave!="" && this.boletaInsertar.palabraclave2 && this.boletaInsertar.cantidadCmabios!="" ){
       this.stateInsert=this.className.success;
-     this.BoletaService.insert(this.boleta).subscribe(
+      this.BoletaService.insert(this.boletaInsertar).subscribe(
         res=>{
           this.stateInsert=this.className.dark;
-         if(res["Response"]==true){
-              this.AlertsService.alertTimeCorrect("Solicitud envíada con éxito",function(component_2){
-
-                          component_2.boleta.AsuntoDetallado="";
-                          component_2.boleta.PalabraClaveConsulta1="";
-                          component_2.boleta.PalabraClaveConsulta2="";
-                          component_2.boleta.CantidadCambios=0;
-                          component_2.boleta.Detalle.detalle="";
-                          component_2.selected=0;
-                          component_2.files=[];
+         if(res[0]["Response"]==true){
+              this.AlertsService.alertTimeCorrect("boleta ingresado con éxito",function(component_2){
+                          component_2.closeModalInsert.nativeElement.click();
+                          component_2.boleta.asunto="";
+                          component_2.boleta.palabraclave="";
+                          component_2.boleta.palabraclave2="";
+                          component_2.boleta.cantidadCambios="";
+                          component_2.reload(component_2);
                },this);
           }else{
             this.AlertsService.alertaError("No se insertó el nuevo registro");
              this.toastr.toastrError(res[1]["Error"]);
           }
-
+          
         },
         err=>console.log(err)
       );
-
-
+    }else{
+      this.stateInsert=this.className.danger;
+      //this.reloadInsertState();
+      this.toastr.toastrError("Los campos de la boleta no pueden ir vacío");
+    }
+  
   }
+   
 
-
-
+  getConsulta():void{
+  	/*this.ServiceService.getSession().subscribe(
+      res=>{
+        console.log(res);
+        
+      },
+      err=>console.log(err)
+    );*/
+  }
   cambiar(){
 
-
+ 
   }
-
+  
 
 onSelect(event) {
+  console.log(event);
   this.files.push(...event.addedFiles);
-  this.boleta.Detalle.EvidenciaArchivo=event.addedFiles[0].name;
-  this.form.patchValue({
-     avatar: this.files[0]
-   });
-   this.form.get('avatar').updateValueAndValidity()
+  this.boletaInsertar.archivos.push(...event.addeFiles.name);
+  console.log(this.files);
 }
 
 onRemove(event) {
+  console.log(event);
   this.files.splice(this.files.indexOf(event), 1);
 }
 }
+
+
