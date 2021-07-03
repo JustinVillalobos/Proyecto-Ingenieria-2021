@@ -21,6 +21,20 @@ class  BoletaController{
       boletas= await common.select("sp_boleta_list");
       res.json(boletas);
     }
+
+    public async list_boleta_detalle(req:Request,res:Response){
+      let boletas:any=[];
+    boletas= await common.select("sp_boleta_detalle_list");
+    res.json(boletas);
+  }
+
+  public async list_boleta_respuesta(req:Request,res:Response){
+    let boletas:any=[];
+  boletas= await common.select("sp_boleta_respuestaLegal_list");
+  res.json(boletas);
+}
+
+
     public async upload(req:Request,res:Response){
       var ruta=req.files["imagen"]["path"].split("\\");
     res.json({"Response":true,"newName":ruta[2]});
@@ -35,7 +49,23 @@ class  BoletaController{
       res.json(boletas);
   }
 
-  public async selectBoleta(req:Request,res:Response,fechaHora:date){
+  public async selectBoletaDetalleById(req:Request,res:Response){
+    const id=req.query.id;
+      let boletas:any=[];
+      console.log(req.query.id);
+    boletas= await common.selectById(id,"sp_boleta_detalle_select_by_Id");
+    res.json(boletas);
+}
+
+public async selectBoletaRespuestaById(req:Request,res:Response){
+  const id=req.query.id;
+    let boletas:any=[];
+    console.log(req.query.id);
+  boletas= await common.selectById(id,"sp_boleta_respuestaLegal_select_by_Id");
+  res.json(boletas);
+}
+
+  public async selectBoleta(req:Request,res:Response,fechaHora:any){
 
     const idUsuario = [req.body.IdUsuario];
     const palabraClaveConsulta1 = [req.body.PalabraClaveConsulta1];
@@ -101,7 +131,6 @@ class  BoletaController{
        const cantidadCambios = [req.body.CantidadCambios];
        const idClasificador = [req.body.IdClasificador];
        const idRespuesta = 1;
-
        let response:any;
        let boletas:any=[];
        let controller=new BoletaController();
@@ -168,23 +197,29 @@ class  BoletaController{
     const idRespuesta = [req.body.idRespuesta];
     const idBoleta = [req.body.idBoleta];
     const detalleRespuesta = [req.body.detalleRespuesta];
-    const fechaHoraRespuesta = [req.body.fechaHoraRespuesta];
+    const fechaHoraRespuesta = new Date();
     const idUsuarioRespuesta = [req.body.idUsuarioRespuesta];
     let ipComputadoraRespuesta = [req.body.ipComputadoraRespuesta];
     let response:any;
+    
       await sql.connect().then(function(pool:any) {
+        
              return pool.request()
              .input("IdBoleta", mssql.Int, idBoleta)
-             .input("IdRespuesta", mssql.Tinyint, idRespuesta)
+             .input("IdRespuesta", mssql.TinyInt, idRespuesta)
               .input("DetalleRespuesta", mssql.VarChar,detalleRespuesta)
               .input("FechaHoraRespuesta",mssql.DateTime, fechaHoraRespuesta)
               .input("IdUsuarioRespuesta", mssql.Int, idUsuarioRespuesta)
               .input("IpComputadoraRespuesta", mssql.VarChar, ipComputadoraRespuesta)
              .execute("sp_boleta_modificar");
+             
          }).then(function(result:any) {
+          
              sql.close();
               response=result.recordset;
+              
          }).catch(function(err:any){
+          
              res.status(400).json({text:"Error de la consulta"});
          });
       res.json(response);

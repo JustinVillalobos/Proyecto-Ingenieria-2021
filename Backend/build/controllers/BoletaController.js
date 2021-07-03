@@ -29,6 +29,20 @@ class BoletaController {
             res.json(boletas);
         });
     }
+    list_boleta_detalle(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let boletas = [];
+            boletas = yield common.select("sp_boleta_detalle_list");
+            res.json(boletas);
+        });
+    }
+    list_boleta_respuesta(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let boletas = [];
+            boletas = yield common.select("sp_boleta_respuestaLegal_list");
+            res.json(boletas);
+        });
+    }
     upload(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var ruta = req.files["imagen"]["path"].split("\\");
@@ -41,6 +55,24 @@ class BoletaController {
             let boletas = [];
             console.log(req.query.id);
             boletas = yield common.selectById(id, "sp_boleta_select_by_id");
+            res.json(boletas);
+        });
+    }
+    selectBoletaDetalleById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = req.query.id;
+            let boletas = [];
+            console.log(req.query.id);
+            boletas = yield common.selectById(id, "sp_boleta_detalle_select_by_Id");
+            res.json(boletas);
+        });
+    }
+    selectBoletaRespuestaById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = req.query.id;
+            let boletas = [];
+            console.log(req.query.id);
+            boletas = yield common.selectById(id, "sp_boleta_respuestaLegal_select_by_Id");
             res.json(boletas);
         });
     }
@@ -155,14 +187,14 @@ class BoletaController {
             const idRespuesta = [req.body.idRespuesta];
             const idBoleta = [req.body.idBoleta];
             const detalleRespuesta = [req.body.detalleRespuesta];
-            const fechaHoraRespuesta = [req.body.fechaHoraRespuesta];
+            const fechaHoraRespuesta = new Date();
             const idUsuarioRespuesta = [req.body.idUsuarioRespuesta];
             let ipComputadoraRespuesta = [req.body.ipComputadoraRespuesta];
             let response;
             yield sql.connect().then(function (pool) {
                 return pool.request()
                     .input("IdBoleta", mssql.Int, idBoleta)
-                    .input("IdRespuesta", mssql.Tinyint, idRespuesta)
+                    .input("IdRespuesta", mssql.TinyInt, idRespuesta)
                     .input("DetalleRespuesta", mssql.VarChar, detalleRespuesta)
                     .input("FechaHoraRespuesta", mssql.DateTime, fechaHoraRespuesta)
                     .input("IdUsuarioRespuesta", mssql.Int, idUsuarioRespuesta)

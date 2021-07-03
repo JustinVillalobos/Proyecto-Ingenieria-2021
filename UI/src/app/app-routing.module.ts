@@ -28,6 +28,7 @@ const routes: Routes = [
   component:SexoComponent},
   {path:'departamento',
   component:DepartamentoComponent},
+ 
   {path:'clasificador',
   component:ClasificadorComponent}
   ];

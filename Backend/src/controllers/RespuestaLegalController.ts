@@ -17,6 +17,7 @@ class RespuestaLegalController{
       	let legal:any=[];
         legal= await common.select("sp_RespuestaLegal_list");
         res.json(legal);
+        console.log(legal);
     }
 
     public async selectById(req:Request,res:Response){
@@ -74,7 +75,9 @@ class RespuestaLegalController{
      public async update(req:Request,res:Response){
 
      	const IdRespuesta=[req.body.IdRespuesta];
-     	const descripcion=[req.body.Descripcion];
+     	const descripcion=[req.body.descripcion];
+
+         
      	let response:any;
           let errores="";
          let flagId=true;
@@ -83,23 +86,25 @@ class RespuestaLegalController{
               errores="El ID es inválido\n";
               flagId=false;
           }
-          if(validator.FormatoPalabraSinEspacio(descripcion,25)==false){
+          if(validator.FormatoPalabraConEspacio(descripcion,25)==false){
               flagDescripcion=false;
               errores+="La descripción del texto no es válido";
           }
+          console.log(errores);
           if(flagDescripcion && flagId){
           	 await sql.connect().then(function(pool:any) {
                     return pool.request()
-                    .input("IdRespuesta", mssql.Int, IdRespuesta)
+                    .input("id", mssql.Int, IdRespuesta)
                     .input("Descripcion", mssql.VarChar, descripcion)
                     .execute("sp_RespuestaLegal_modificar");
                 }).then(function(result:any) {
                     sql.close();
                      response=result.recordset;
+                     res.json([{"Response":true}]);
                 }).catch(function(err:any){
                    res.status(400).json([{text:"Error de la consulta"},{"Response":false}]);
                 });
-             res.json([{"Response":true}]);
+             
          }else{
              res.json([{"Response":false},{Error:errores}]);
          }

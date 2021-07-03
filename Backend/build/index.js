@@ -11,6 +11,7 @@ const usuarioRoutes_1 = __importDefault(require("./routes/usuarioRoutes"));
 const sexoRoutes_1 = __importDefault(require("./routes/sexoRoutes"));
 const departamentoRoutes_1 = __importDefault(require("./routes/departamentoRoutes"));
 const clasificadorRoutes_1 = __importDefault(require("./routes/clasificadorRoutes"));
+const RespuestaLegalRouter_1 = __importDefault(require("./routes/RespuestaLegalRouter"));
 const BoletaRoutes_1 = __importDefault(require("./routes/BoletaRoutes"));
 const AuthRoutes_1 = __importDefault(require("./routes/AuthRoutes"));
 class Server {
@@ -33,6 +34,7 @@ class Server {
         this.app.use('/backend/Departamento', departamentoRoutes_1.default);
         this.app.use('/backend/Clasificador', clasificadorRoutes_1.default);
         this.app.use('/backend/Boleta', BoletaRoutes_1.default);
+        this.app.use('/backend/RespuestaLegal', RespuestaLegalRouter_1.default);
         this.app.use('/backend/Usuario', usuarioRoutes_1.default);
         this.app.use('/backend/Auth', AuthRoutes_1.default);
     }

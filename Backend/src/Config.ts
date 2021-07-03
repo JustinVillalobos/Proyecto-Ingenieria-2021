@@ -4,7 +4,7 @@ const mssql = require('mssql');
 const config ={
       user: 'sa',
       password: 'root',
-      server: 'LAPTOP-FRPU9KAL\\SQL_SERVER', 
+      server: 'DESKTOP-UVNFEG7\\MSSQLSERVER', 
       database: 'Ing_System',
       "options": {
         "encrypt": true,

@@ -7,6 +7,7 @@ import usuarioRoutes from './routes/usuarioRoutes';
 import sexoRoutes from './routes/sexoRoutes';
 import departamentoRoutes from './routes/departamentoRoutes';
 import clasificadorRoutes from './routes/clasificadorRoutes';
+import RespuestaLegalRoutes from './routes/RespuestaLegalRouter';
 import boletaRoutes from './routes/BoletaRoutes';
 import authRoutes from './routes/AuthRoutes';
 class Server {
@@ -33,6 +34,7 @@ class Server {
         this.app.use('/backend/Departamento',departamentoRoutes);
         this.app.use('/backend/Clasificador',clasificadorRoutes);
         this.app.use('/backend/Boleta',boletaRoutes);
+        this.app.use('/backend/RespuestaLegal',RespuestaLegalRoutes);
         this.app.use('/backend/Usuario',usuarioRoutes);
         this.app.use('/backend/Auth',authRoutes);
     }
