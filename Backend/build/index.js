@@ -14,6 +14,7 @@ const clasificadorRoutes_1 = __importDefault(require("./routes/clasificadorRoute
 const RespuestaLegalRouter_1 = __importDefault(require("./routes/RespuestaLegalRouter"));
 const BoletaRoutes_1 = __importDefault(require("./routes/BoletaRoutes"));
 const AuthRoutes_1 = __importDefault(require("./routes/AuthRoutes"));
+const ReportRoutes_1 = __importDefault(require("./routes/ReportRoutes"));
 class Server {
     constructor() {
         this.app = express_1.default();
@@ -37,6 +38,7 @@ class Server {
         this.app.use('/backend/RespuestaLegal', RespuestaLegalRouter_1.default);
         this.app.use('/backend/Usuario', usuarioRoutes_1.default);
         this.app.use('/backend/Auth', AuthRoutes_1.default);
+        this.app.use('/backend/Reports', ReportRoutes_1.default);
     }
     start() {
         this.app.listen(this.app.get('port'), () => {

@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const multipart = require('connect-multiparty');
+var fs = require('fs');
+var request = require('request');
 const multipartMiddleware = multipart({
     uploadDir: './build/uploads'
 });
@@ -22,6 +24,14 @@ class BoletaRoutes {
         this.router.post('/insert', BoletaController_1.boletaController.insert);
         this.router.post('/upload', multipartMiddleware, BoletaController_1.boletaController.upload);
         this.router.get('/select_by_Empleado', BoletaController_1.boletaController.selectByEmpleado);
+        this.router.get('/Imagenes/:img', function (req, res) {
+            /*var file = fs.readFileSync(__dirname + '/../uploads/'+req.params["img"], 'binary');
+            res.setHeader('Content-Length', file.length);
+            res.write(file, 'binary'); res.end();*/
+            //  res.sendFile( "../uploads/"+req.params["img"], { root: __dirname } );
+            var file = __dirname + '/../uploads/' + req.params["img"];
+            res.download(file);
+        });
     }
 }
 const boletaRoutes = new BoletaRoutes();

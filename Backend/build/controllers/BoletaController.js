@@ -184,12 +184,12 @@ class BoletaController {
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const idRespuesta = [req.body.idRespuesta];
-            const idBoleta = [req.body.idBoleta];
-            const detalleRespuesta = [req.body.detalleRespuesta];
+            const idRespuesta = [req.body.IdRespuesta];
+            const idBoleta = [req.body.IdBoleta];
+            const detalleRespuesta = [req.body.DetalleRespuesta];
             const fechaHoraRespuesta = new Date();
-            const idUsuarioRespuesta = [req.body.idUsuarioRespuesta];
-            let ipComputadoraRespuesta = [req.body.ipComputadoraRespuesta];
+            const idUsuarioRespuesta = [req.body.IdUsuarioRespuesta];
+            let ipComputadoraRespuesta = [req.body.IpComputadoraRespuesta];
             let response;
             yield sql.connect().then(function (pool) {
                 return pool.request()
@@ -203,7 +203,9 @@ class BoletaController {
             }).then(function (result) {
                 sql.close();
                 response = result.recordset;
+                res.json({ "Response": true });
             }).catch(function (err) {
+                console.log(err);
                 res.status(400).json({ text: "Error de la consulta" });
             });
             res.json(response);

@@ -26,7 +26,6 @@ export class CuboComponent implements OnInit {
             ],
             store: {
                 type: 'xmla',
-                 //url: 'https://localhost/Services/OLAP/msmdpump.dll',
                 url: 'https://demos.devexpress.com/Services/OLAP/msmdpump.dll',
                 catalog: 'Adventure Works DW Standard Edition',
                 cube: 'Adventure Works'

@@ -1,0 +1,30 @@
+<app-menu-rpt></app-menu-rpt>
+<div class="container mt-25" style="margin-top:10%;">
+   <h2>Reporte B</h2>
+  <div class="row">
+
+    
+    <div class="col-md-6" id="htmlData" >
+     <ng-select [(ngModel)]="selected" placeholder="--Seleccione un usuario--">
+							   <ng-option *ngFor="let dpt of usuarios" [value]="dpt.idUsuario">{{dpt.Nombre+" "+dpt.Apellidos}}</ng-option>
+							</ng-select>
+    </div>
+
+    <div class="col-md-2 text-right d-inline">
+      <button class="btn btn-primary btn-block mt-2 d-inline" (click)="filterRPT()" style="width:75px;height:35px;"><span><i class="fa fa-filter" ></i></span><label class="ml-2">Filtrar</label></button>
+      <button class="btn btn-danger btn-block mt-2 ml-3 d-inline" (click)="downloadrpt()" style="width:35px;height:35px;"><span><i class="fa fa-file-pdf"></i></span><label class="ml-2"></label></button>
+    </div>
+    <div class="col-md-2 text-right">
+      
+    </div>
+
+  </div>
+ 
+
+
+</div>
+<div [ngClass]="['report', '' + state]" >
+   <pdf-viewer [src]="pdfSrc" [render-text]="true" style="display:'block';border:'groover';">
+    </pdf-viewer>
+</div>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "pacman" [fullScreen] = "true"><p style="color: white" > Cargando... </p></ngx-spinner>

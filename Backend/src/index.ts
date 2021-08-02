@@ -10,6 +10,7 @@ import clasificadorRoutes from './routes/clasificadorRoutes';
 import RespuestaLegalRoutes from './routes/RespuestaLegalRouter';
 import boletaRoutes from './routes/BoletaRoutes';
 import authRoutes from './routes/AuthRoutes';
+import reportRoutes from './routes/ReportRoutes';
 class Server {
     public app:Application;
     constructor(){
@@ -37,6 +38,7 @@ class Server {
         this.app.use('/backend/RespuestaLegal',RespuestaLegalRoutes);
         this.app.use('/backend/Usuario',usuarioRoutes);
         this.app.use('/backend/Auth',authRoutes);
+        this.app.use('/backend/Reports',reportRoutes);
     }
 
     start():void{

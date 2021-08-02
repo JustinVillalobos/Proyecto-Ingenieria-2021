@@ -4,8 +4,8 @@ const sql = new sqlConnection();
 "use strict";
 
 module.exports = class CommonQueries{
-    
-   
+
+
     public async delete(parameter:number, query:string){
       	let msg:boolean=true;
            await sql.connect().then(function(pool:any) {
@@ -29,6 +29,7 @@ module.exports = class CommonQueries{
                 sql.close();
                 objects=result.recordset;
             }).catch(function(err:any){
+              console.log(err);
                   objects=[{text:"Error de la consulta"},{"Response":false}];
             });
 
@@ -50,4 +51,3 @@ module.exports = class CommonQueries{
          return objects;
     }
  }
-

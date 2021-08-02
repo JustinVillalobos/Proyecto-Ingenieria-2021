@@ -21,8 +21,7 @@ import { CuboComponent } from './Components/cubo/cubo.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { DataTablesModule } from 'angular-datatables';
-
-
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -36,6 +35,17 @@ import { MenuComponent } from './Templates/menu/menu.component';
 import { DepartamentoComponent } from './Components/departamento/departamento.component';
 import { ClasificadorComponent } from './Components/clasificador/clasificador.component';
 import { ListadoBoletasEmpleadoComponent } from './Components/listado-boletas-empleado/listado-boletas-empleado.component';
+import { ListadoBoletasComponent } from './Components/listado-boletas/listado-boletas.component';
+import { ResponderBoletaComponent } from './Components/responder-boleta/responder-boleta.component';
+import { BoletasRangoFechasComponent } from './Reports/boletas-rango-fechas/boletas-rango-fechas.component';
+import { BoletasDepartamentoComponent } from './Reports/boletas-departamento/boletas-departamento.component';
+import { BoletasUsuarioComponent } from './Reports/boletas-usuario/boletas-usuario.component';
+import { BoletasTemaComponent } from './Reports/boletas-tema/boletas-tema.component';
+import { BoletasDepartamentoMesComponent } from './Reports/boletas-departamento-mes/boletas-departamento-mes.component';
+import { BoletasUsuarioClasificadorComponent } from './Reports/boletas-usuario-clasificador/boletas-usuario-clasificador.component';
+import { BoletasDepartamentoCantidadComponent } from './Reports/boletas-departamento-cantidad/boletas-departamento-cantidad.component';
+import { BoletasResumenComponent } from './Reports/boletas-resumen/boletas-resumen.component';
+import { MenuRptComponent } from './Templates/menu-rpt/menu-rpt.component';
 
 
 const maskConfig: Partial<IConfig> = {
@@ -56,7 +66,18 @@ const maskConfig: Partial<IConfig> = {
     MenuComponent,
     DepartamentoComponent,
     ClasificadorComponent,
-    ListadoBoletasEmpleadoComponent
+    ListadoBoletasEmpleadoComponent,
+    ListadoBoletasComponent,
+    ResponderBoletaComponent,
+    BoletasRangoFechasComponent,
+    BoletasDepartamentoComponent,
+    BoletasUsuarioComponent,
+    BoletasTemaComponent,
+    BoletasDepartamentoMesComponent,
+    BoletasUsuarioClasificadorComponent,
+    BoletasDepartamentoCantidadComponent,
+    BoletasResumenComponent,
+    MenuRptComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +91,9 @@ const maskConfig: Partial<IConfig> = {
     NgxDropzoneModule,
      NgxMaskModule.forRoot(maskConfig),
      NgxSpinnerModule,
-     NgSelectModule
+     NgSelectModule,
+     PdfViewerModule
+     
   ],
   providers: [ServiceService],
   bootstrap: [AppComponent]

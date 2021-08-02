@@ -194,16 +194,16 @@ public async selectBoletaRespuestaById(req:Request,res:Response){
 
 
   public async update(req:Request,res:Response){
-    const idRespuesta = [req.body.idRespuesta];
-    const idBoleta = [req.body.idBoleta];
-    const detalleRespuesta = [req.body.detalleRespuesta];
+    const idRespuesta = [req.body.IdRespuesta];
+    const idBoleta = [req.body.IdBoleta];
+    const detalleRespuesta = [req.body.DetalleRespuesta];
     const fechaHoraRespuesta = new Date();
-    const idUsuarioRespuesta = [req.body.idUsuarioRespuesta];
-    let ipComputadoraRespuesta = [req.body.ipComputadoraRespuesta];
+    const idUsuarioRespuesta = [req.body.IdUsuarioRespuesta];
+    let ipComputadoraRespuesta = [req.body.IpComputadoraRespuesta];
     let response:any;
-    
+  
       await sql.connect().then(function(pool:any) {
-        
+
              return pool.request()
              .input("IdBoleta", mssql.Int, idBoleta)
              .input("IdRespuesta", mssql.TinyInt, idRespuesta)
@@ -212,14 +212,14 @@ public async selectBoletaRespuestaById(req:Request,res:Response){
               .input("IdUsuarioRespuesta", mssql.Int, idUsuarioRespuesta)
               .input("IpComputadoraRespuesta", mssql.VarChar, ipComputadoraRespuesta)
              .execute("sp_boleta_modificar");
-             
+
          }).then(function(result:any) {
-          
+
              sql.close();
               response=result.recordset;
-              
+                 res.json({"Response":true});
          }).catch(function(err:any){
-          
+           console.log(err);
              res.status(400).json({text:"Error de la consulta"});
          });
       res.json(response);

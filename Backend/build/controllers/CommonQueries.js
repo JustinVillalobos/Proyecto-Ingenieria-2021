@@ -39,6 +39,7 @@ module.exports = class CommonQueries {
                 sql.close();
                 objects = result.recordset;
             }).catch(function (err) {
+                console.log(err);
                 objects = [{ text: "Error de la consulta" }, { "Response": false }];
             });
             return objects;
